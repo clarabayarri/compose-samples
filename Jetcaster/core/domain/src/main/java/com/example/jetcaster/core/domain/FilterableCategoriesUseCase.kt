@@ -42,7 +42,7 @@ class FilterableCategoriesUseCase @Inject constructor(
                 FilterableCategoriesModel(
                     categories = categories.map { it.asExternalModel() },
                     selectedCategory = selectedCategory
-                        ?: categories.firstOrNull()?.asExternalModel()
+                        ?: categories.getOrNull(3)?.asExternalModel()
                 )
             }
 }

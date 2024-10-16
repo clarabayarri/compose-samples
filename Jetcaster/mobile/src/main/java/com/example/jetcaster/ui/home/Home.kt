@@ -28,6 +28,9 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
+import androidx.compose.foundation.layout.displayCutout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -90,6 +93,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -453,7 +457,7 @@ private fun HomeScreen(
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     HomeScreenBackground(
-        modifier = modifier.windowInsetsPadding(WindowInsets.navigationBars)
+        modifier = modifier.windowInsetsPadding(WindowInsets.displayCutout)
     ) {
         Scaffold(
             topBar = {
@@ -478,7 +482,11 @@ private fun HomeScreen(
                 filterableCategoriesModel = homeState.filterableCategoriesModel,
                 podcastCategoryFilterResult = homeState.podcastCategoryFilterResult,
                 library = homeState.library,
-                modifier = Modifier.padding(contentPadding),
+                modifier = Modifier.padding(
+                    top = contentPadding.calculateTopPadding(),
+                    start = contentPadding.calculateStartPadding(LocalLayoutDirection.current),
+                    end = contentPadding.calculateEndPadding(LocalLayoutDirection.current),
+                ),
                 onPodcastUnfollowed = homeState.onPodcastUnfollowed,
                 onHomeCategorySelected = homeState.onHomeCategorySelected,
                 onCategorySelected = homeState.onCategorySelected,

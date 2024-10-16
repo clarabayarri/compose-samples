@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalSharedTransitionApi::class)
+@file:OptIn(ExperimentalSharedTransitionApi::class, ExperimentalSharedTransitionApi::class,
+    ExperimentalSharedTransitionApi::class
+)
 
 package com.example.jetcaster.ui.home.category
 
@@ -80,8 +82,7 @@ fun LazyListScope.podcastCategory(
         val sharedTransitionScope = LocalSharedTransitionScope.current
             ?: throw IllegalStateException("No SharedElementScope found")
         val animatedVisibilityScope = LocalAnimatedVisibilityScope.current
-            ?: throw IllegalStateException("No SharedElementScope found")
-        // HERE 3
+            ?: throw IllegalStateException("No AnimatedVisibilityScope found")
         with(sharedTransitionScope) {
             EpisodeListItem(
                 episode = item.episode,
@@ -89,15 +90,8 @@ fun LazyListScope.podcastCategory(
                 onClick = navigateToPlayer,
                 onQueueEpisode = onQueueEpisode,
                 modifier = Modifier
-                    .fillParentMaxWidth()
-                    .animateItem(),
-                imageModifier = Modifier.sharedElement(
-                    state = rememberSharedContentState(
-                        key = item.episode.title
-                    ),
-                    animatedVisibilityScope = animatedVisibilityScope,
-                    clipInOverlayDuringTransition = OverlayClip(MaterialTheme.shapes.medium)
-                ),
+                    .fillParentMaxWidth(), //animateItem
+                imageModifier = Modifier, //sharedElement,
                 removeFromQueue = removeFromQueue
             )
         }

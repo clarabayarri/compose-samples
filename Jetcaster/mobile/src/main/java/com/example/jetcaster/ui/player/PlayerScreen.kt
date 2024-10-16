@@ -33,6 +33,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -80,6 +82,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
@@ -223,7 +226,11 @@ fun PlayerContentWithBackground(
             episode = uiState.episodePlayerState.currentEpisode,
             modifier = Modifier
                 .fillMaxSize()
-                .padding(contentPadding)
+                .padding(
+                    top = contentPadding.calculateTopPadding(),
+                    start = contentPadding.calculateStartPadding(LocalLayoutDirection.current),
+                    end = contentPadding.calculateEndPadding(LocalLayoutDirection.current),
+                ),
         )
         PlayerContent(
             uiState = uiState,
@@ -380,18 +387,11 @@ private fun PlayerContentRegular(
             modifier = Modifier.padding(horizontal = 8.dp)
         ) {
             Spacer(modifier = Modifier.weight(1f))
-            // HERE 3
             with(sharedTransitionScope) {
                 PlayerImage(
                     podcastImageUrl = currentEpisode.podcastImageUrl,
                     modifier = Modifier.weight(10f),
-                    imageModifier = Modifier.sharedElement(
-                        state = rememberSharedContentState(
-                            key = currentEpisode.title
-                        ),
-                        animatedVisibilityScope = animatedVisibilityScope,
-                        clipInOverlayDuringTransition = OverlayClip(MaterialTheme.shapes.medium)
-                    ),
+                    imageModifier = Modifier, //shared element
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))
