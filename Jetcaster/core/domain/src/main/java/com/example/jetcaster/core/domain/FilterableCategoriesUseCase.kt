@@ -40,7 +40,20 @@ class FilterableCategoriesUseCase @Inject constructor(
         categoryStore.categoriesSortedByPodcastCount()
             .map { categories ->
                 FilterableCategoriesModel(
-                    categories = categories.map { it.asExternalModel() },
+                    categories = categories.map { it.asExternalModel() }
+                        .sortedWith { item1, item2 ->
+                            when {
+                                item1.name.contains("Technology") && !item2.name.contains(
+                                    "Technology"
+                                ) -> -1
+
+                                !item1.name.contains("Technology") && item2.name.contains(
+                                    "Technology"
+                                ) -> 1
+
+                                else -> item1.name.compareTo(item2.name)
+                            }
+                        },
                     selectedCategory = selectedCategory
                         ?: categories.getOrNull(3)?.asExternalModel()
                 )
