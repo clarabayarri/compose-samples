@@ -391,7 +391,13 @@ private fun PlayerContentRegular(
                 PlayerImage(
                     podcastImageUrl = currentEpisode.podcastImageUrl,
                     modifier = Modifier.weight(10f),
-                    imageModifier = Modifier, //shared element
+                    imageModifier = Modifier.sharedElement(
+                        state = rememberSharedContentState(
+                            key = currentEpisode.title
+                        ),
+                        animatedVisibilityScope = animatedVisibilityScope,
+                        clipInOverlayDuringTransition = OverlayClip(MaterialTheme.shapes.medium)
+                    ), //shared element
                 )
             }
             Spacer(modifier = Modifier.height(32.dp))

@@ -90,8 +90,14 @@ fun LazyListScope.podcastCategory(
                 onClick = navigateToPlayer,
                 onQueueEpisode = onQueueEpisode,
                 modifier = Modifier
-                    .fillParentMaxWidth(), //animateItem
-                imageModifier = Modifier, //sharedElement,
+                    .fillParentMaxWidth().animateItem(), //animateItem
+                imageModifier = Modifier.sharedElement(
+                    state = rememberSharedContentState(
+                        key = item.episode.title
+                    ),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    clipInOverlayDuringTransition = OverlayClip(MaterialTheme.shapes.medium)
+                ), //sharedElement,
                 removeFromQueue = removeFromQueue
             )
         }
