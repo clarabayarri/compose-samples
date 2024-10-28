@@ -136,7 +136,13 @@ class HomeViewModel @Inject constructor(
             }
         }
 
-        refresh(force = false)
+        //refresh(force = false)
+        viewModelScope.launch {
+           val isEmpty = podcastStore.isEmpty()
+           if (isEmpty) {
+                   refresh(force = false)
+               }
+       }
     }
 
     fun refresh(force: Boolean = true) {
