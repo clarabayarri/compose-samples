@@ -55,7 +55,7 @@ class FilterableCategoriesUseCase @Inject constructor(
                             }
                         },
                     selectedCategory = selectedCategory
-                        ?: categories.getOrNull(3)?.asExternalModel()
+                        ?: categories.firstOrNull({ it.name == "Technology" })?.asExternalModel()
                 )
             }
 }

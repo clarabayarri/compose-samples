@@ -50,19 +50,10 @@ class PodcastCategoryFilterUseCase @Inject constructor(
 
         // Combine our flows and collect them into the view state StateFlow
         return combine(recentPodcastsFlow, episodesFlow) { topPodcasts, episodes ->
-            if (topPodcasts.any { it.podcast.title == "Android Developers Backstage" }) {
-                PodcastCategoryFilterResult(
-                    topPodcasts = topPodcasts.map { it.asExternalModel() }
-                        .filter { it.title == "Android Developers Backstage" },
-                    episodes = episodes.map { it.asPodcastToEpisodeInfo() }
-                        .filter { it.podcast.title == "Android Developers Backstage" }
-                )
-            } else {
-                PodcastCategoryFilterResult(
-                    topPodcasts = topPodcasts.map { it.asExternalModel() },
-                    episodes = episodes.map { it.asPodcastToEpisodeInfo() }
-                )
-            }
+            PodcastCategoryFilterResult(
+                topPodcasts = topPodcasts.map { it.asExternalModel() },
+                episodes = episodes.map { it.asPodcastToEpisodeInfo() }
+            )
         }
     }
 }
